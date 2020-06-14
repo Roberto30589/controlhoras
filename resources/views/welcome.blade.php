@@ -96,5 +96,6 @@
                 </div>
             </div>
         </div>
+        <example-component></example-component>
     </body>
 </html>
