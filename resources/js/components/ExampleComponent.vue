@@ -4,9 +4,9 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">Example Component</div>
+
                     <div class="card-body">
-                        Soy un Ejemplo de Componente.
-                        {{saludo}}
+                        I'm an example component.
                     </div>
                 </div>
             </div>
@@ -16,13 +16,8 @@
 
 <script>
     export default {
-        data(){
-            return {
-                saludo:'hola',
-            }
-        },
         mounted() {
-            console.log('Componente Montado')
+            console.log('Component mounted.')
         }
     }
 </script>
