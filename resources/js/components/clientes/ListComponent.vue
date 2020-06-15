@@ -1,34 +1,44 @@
 <template>
     <v-app>
-        <v-btn rounded color="primary" dark  v-on:click="clienteForm(null)">Agregar</v-btn>
-        
         <v-dialog max-width="600px" v-model="clienteModal">
-        <cliente-form 
-            @insert="clienteInsert"
-            @update="clienteUpdate"
-            :data="cliente"
-        >
-        </cliente-form>
+            <cliente-form
+                @insert="clienteInsert"
+                @update="clienteUpdate"
+                @close="clienteClose"
+                :dataIn="cliente"
+            >
+            </cliente-form>
         </v-dialog>
+
         <v-card>
-            <div class="card-header">
-                Clientes 
-            </div>
-                <div class="card-body">
-                <table class="table table-striped table-bordered">
-                    <tr v-for="(cliente) in clientes" :key="cliente.id" v-show="cliente.habilitado">
-                        <td>
-                            {{cliente.nombre}}
-                        </td>
-                        <td>
-                            {{cliente.rut}}
-                        </td>
-                        <td width="1">
-                            <button class="form-control btn btn-outline-primary" v-on:click="clienteForm(cliente)">editar</button>
-                        </td>
-                    </tr>
-                </table>
-            </div>
+            <v-data-table
+                :headers="headers"
+                :items="clientes"
+                :search="search"
+                class="elevation-1"
+            >
+            <template v-slot:top>
+                <div class="card-header">
+                    Clientes
+                    <v-btn rounded color="primary" dark  v-on:click="clienteForm(null)">Agregar</v-btn>
+                    <v-text-field
+                        v-model="search"
+                        append-icon="mdi-magnify"
+                        label="Search"
+                        single-line
+                        hide-details
+                    ></v-text-field>
+                </div>
+            </template>
+            <template v-slot:item.actions="{ item }">
+                <v-icon
+                    class="mr-2"
+                    @click="clienteForm(item)"
+                >
+                mdi-pencil
+                </v-icon>
+            </template>
+            </v-data-table>
         </v-card>
     </v-app>
 </template>
@@ -36,9 +46,20 @@
     export default {
         data(){
             return {
+                search: '',
                 clientes:[],
+                headers:[
+                    {
+                    text: 'Nombre',
+                    align: 'start',
+                    value: 'nombre',
+                    },
+                    { text: 'RUT', value: 'rut' },
+                    { text: 'Actions', value: 'actions', sortable: false },
+                ],
                 cliente:null,
                 clienteModal:false,
+                habilitados:true,
             }
         },
         created(){
@@ -48,7 +69,7 @@
                 });
         },
         mounted() {
-            console.log('Componente List Montado');
+            console.log('Componente Cliente List Montado');
         },
         methods:{
             clienteForm(cliente){
@@ -57,14 +78,15 @@
             },
             clienteInsert(cliente){
                 this.clientes.push(cliente);
-                console.log(this.clientes);
-                $('#addModal').modal('hide');
+                this.clienteModal=false;
             },
             clienteUpdate(cliente){
                 Object.assign(this.cliente, cliente);
-                console.log(this.clientes);
-                $('#addModal').modal('hide');
+                this.clienteModal=false;
             },
+            clienteClose(){
+                this.clienteModal=false;
+            },            
         }
     }
 </script>

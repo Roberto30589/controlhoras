@@ -1965,32 +1965,28 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['data'],
-  data: function data() {
-    return {
-      cliente: {
+  props: {
+    dataIn: {
+      "default": {
         id: null,
         nombre: '',
         rut: '',
         habilitado: true
       }
+    }
+  },
+  data: function data() {
+    return {
+      cliente: null
     };
   },
-  mounted: function mounted() {},
+  created: function created() {
+    this.cliente = JSON.parse(JSON.stringify(this.dataIn));
+  },
+  mounted: function mounted() {
+    console.log('Componente Cliente Form Montado');
+  },
   methods: {
     todatabase: function todatabase() {
       var _this = this;
@@ -2011,7 +2007,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   watch: {
-    data: function data(val) {
+    dataIn: function dataIn(val) {
       if (val == null) {
         this.cliente = {
           id: null,
@@ -2071,12 +2067,36 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      search: '',
       clientes: [],
+      headers: [{
+        text: 'Nombre',
+        align: 'start',
+        value: 'nombre'
+      }, {
+        text: 'RUT',
+        value: 'rut'
+      }, {
+        text: 'Actions',
+        value: 'actions',
+        sortable: false
+      }],
       cliente: null,
-      clienteModal: false
+      clienteModal: false,
+      habilitados: true
     };
   },
   created: function created() {
@@ -2087,7 +2107,7 @@ __webpack_require__.r(__webpack_exports__);
     });
   },
   mounted: function mounted() {
-    console.log('Componente List Montado');
+    console.log('Componente Cliente List Montado');
   },
   methods: {
     clienteForm: function clienteForm(cliente) {
@@ -2096,13 +2116,14 @@ __webpack_require__.r(__webpack_exports__);
     },
     clienteInsert: function clienteInsert(cliente) {
       this.clientes.push(cliente);
-      console.log(this.clientes);
-      $('#addModal').modal('hide');
+      this.clienteModal = false;
     },
     clienteUpdate: function clienteUpdate(cliente) {
       Object.assign(this.cliente, cliente);
-      console.log(this.clientes);
-      $('#addModal').modal('hide');
+      this.clienteModal = false;
+    },
+    clienteClose: function clienteClose() {
+      this.clienteModal = false;
     }
   }
 });
@@ -19765,140 +19786,80 @@ var render = function() {
       _c(
         "v-card",
         [
-          _c("v-card-title", [_c("h5", [_vm._v("Cliente")])]),
+          _c("v-card-title", { staticClass: "headline" }, [_vm._v("Cliente")]),
           _vm._v(" "),
           _c(
             "v-card-text",
             [
-              _c("v-container", [
-                _c("div", { staticClass: "form-row" }, [
-                  _c("div", { staticClass: "form-group col-md-6" }, [
-                    _c("label", [_vm._v("Nombre")]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.cliente.nombre,
-                          expression: "cliente.nombre"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: {
-                        type: "text",
-                        placeholder: "Entel",
-                        required: ""
+              _c(
+                "v-container",
+                [
+                  _c("v-text-field", {
+                    attrs: { label: "Nombre Empresa", required: "" },
+                    model: {
+                      value: _vm.cliente.nombre,
+                      callback: function($$v) {
+                        _vm.$set(_vm.cliente, "nombre", $$v)
                       },
-                      domProps: { value: _vm.cliente.nombre },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(_vm.cliente, "nombre", $event.target.value)
-                        }
-                      }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-group col-md-6" }, [
-                    _c("label", [_vm._v("RUT")]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.cliente.rut,
-                          expression: "cliente.rut"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: { type: "text", placeholder: "76.000.000-6" },
-                      domProps: { value: _vm.cliente.rut },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(_vm.cliente, "rut", $event.target.value)
-                        }
-                      }
-                    })
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "custom-control custom-checkbox" }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.cliente.habilitado,
-                        expression: "cliente.habilitado"
-                      }
-                    ],
-                    staticClass: "custom-control-input",
-                    attrs: { type: "checkbox", id: "clientehabilitado" },
-                    domProps: {
-                      checked: Array.isArray(_vm.cliente.habilitado)
-                        ? _vm._i(_vm.cliente.habilitado, null) > -1
-                        : _vm.cliente.habilitado
-                    },
-                    on: {
-                      change: function($event) {
-                        var $$a = _vm.cliente.habilitado,
-                          $$el = $event.target,
-                          $$c = $$el.checked ? true : false
-                        if (Array.isArray($$a)) {
-                          var $$v = null,
-                            $$i = _vm._i($$a, $$v)
-                          if ($$el.checked) {
-                            $$i < 0 &&
-                              _vm.$set(
-                                _vm.cliente,
-                                "habilitado",
-                                $$a.concat([$$v])
-                              )
-                          } else {
-                            $$i > -1 &&
-                              _vm.$set(
-                                _vm.cliente,
-                                "habilitado",
-                                $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                              )
-                          }
-                        } else {
-                          _vm.$set(_vm.cliente, "habilitado", $$c)
-                        }
-                      }
+                      expression: "cliente.nombre"
                     }
                   }),
                   _vm._v(" "),
-                  _c(
-                    "label",
-                    {
-                      staticClass: "custom-control-label",
-                      attrs: { for: "clientehabilitado" }
+                  _c("v-text-field", {
+                    attrs: { label: "RUT Empresa" },
+                    model: {
+                      value: _vm.cliente.rut,
+                      callback: function($$v) {
+                        _vm.$set(_vm.cliente, "rut", $$v)
+                      },
+                      expression: "cliente.rut"
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("v-switch", {
+                    attrs: {
+                      inset: "",
+                      label: _vm.cliente.habilitado
+                        ? "Habilitado"
+                        : "Deshabilitado"
                     },
-                    [_vm._v("Habilitado")]
-                  )
-                ])
-              ]),
+                    model: {
+                      value: _vm.cliente.habilitado,
+                      callback: function($$v) {
+                        _vm.$set(_vm.cliente, "habilitado", $$v)
+                      },
+                      expression: "cliente.habilitado"
+                    }
+                  })
+                ],
+                1
+              ),
               _vm._v(" "),
               _c(
                 "v-card-actions",
                 [
-                  _c("v-btn", { attrs: { color: "red", dark: "" } }, [
-                    _vm._v("Cancelar")
-                  ]),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { color: "red", dark: "" },
+                      on: {
+                        click: function($event) {
+                          return _vm.$emit("close")
+                        }
+                      }
+                    },
+                    [_vm._v("Cancelar")]
+                  ),
                   _vm._v(" "),
                   _c(
                     "v-btn",
                     {
                       staticClass: "btn btn-primary",
-                      attrs: { type: "submit" }
+                      attrs: {
+                        type: "submit",
+                        color: "blue darken-4",
+                        dark: ""
+                      }
                     },
                     [_vm._v("Save changes")]
                   )
@@ -19941,19 +19902,6 @@ var render = function() {
     "v-app",
     [
       _c(
-        "v-btn",
-        {
-          attrs: { rounded: "", color: "primary", dark: "" },
-          on: {
-            click: function($event) {
-              return _vm.clienteForm(null)
-            }
-          }
-        },
-        [_vm._v("Agregar")]
-      ),
-      _vm._v(" "),
-      _c(
         "v-dialog",
         {
           attrs: { "max-width": "600px" },
@@ -19967,74 +19915,97 @@ var render = function() {
         },
         [
           _c("cliente-form", {
-            attrs: { data: _vm.cliente },
-            on: { insert: _vm.clienteInsert, update: _vm.clienteUpdate }
+            attrs: { dataIn: _vm.cliente },
+            on: {
+              insert: _vm.clienteInsert,
+              update: _vm.clienteUpdate,
+              close: _vm.clienteClose
+            }
           })
         ],
         1
       ),
       _vm._v(" "),
-      _c("v-card", [
-        _c("div", { staticClass: "card-header" }, [
-          _vm._v("\n            Clientes \n        ")
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "card-body" }, [
-          _c(
-            "table",
-            { staticClass: "table table-striped table-bordered" },
-            _vm._l(_vm.clientes, function(cliente) {
-              return _c(
-                "tr",
-                {
-                  directives: [
-                    {
-                      name: "show",
-                      rawName: "v-show",
-                      value: cliente.habilitado,
-                      expression: "cliente.habilitado"
-                    }
-                  ],
-                  key: cliente.id
-                },
-                [
-                  _c("td", [
-                    _vm._v(
-                      "\n                        " +
-                        _vm._s(cliente.nombre) +
-                        "\n                    "
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("td", [
-                    _vm._v(
-                      "\n                        " +
-                        _vm._s(cliente.rut) +
-                        "\n                    "
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("td", { attrs: { width: "1" } }, [
+      _c(
+        "v-card",
+        [
+          _c("v-data-table", {
+            staticClass: "elevation-1",
+            attrs: {
+              headers: _vm.headers,
+              items: _vm.clientes,
+              search: _vm.search
+            },
+            scopedSlots: _vm._u([
+              {
+                key: "top",
+                fn: function() {
+                  return [
                     _c(
-                      "button",
+                      "div",
+                      { staticClass: "card-header" },
+                      [
+                        _vm._v("\n                Clientes\n                "),
+                        _c(
+                          "v-btn",
+                          {
+                            attrs: { rounded: "", color: "primary", dark: "" },
+                            on: {
+                              click: function($event) {
+                                return _vm.clienteForm(null)
+                              }
+                            }
+                          },
+                          [_vm._v("Agregar")]
+                        ),
+                        _vm._v(" "),
+                        _c("v-text-field", {
+                          attrs: {
+                            "append-icon": "mdi-magnify",
+                            label: "Search",
+                            "single-line": "",
+                            "hide-details": ""
+                          },
+                          model: {
+                            value: _vm.search,
+                            callback: function($$v) {
+                              _vm.search = $$v
+                            },
+                            expression: "search"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ]
+                },
+                proxy: true
+              },
+              {
+                key: "item.actions",
+                fn: function(ref) {
+                  var item = ref.item
+                  return [
+                    _c(
+                      "v-icon",
                       {
-                        staticClass: "form-control btn btn-outline-primary",
+                        staticClass: "mr-2",
                         on: {
                           click: function($event) {
-                            return _vm.clienteForm(cliente)
+                            return _vm.clienteForm(item)
                           }
                         }
                       },
-                      [_vm._v("editar")]
+                      [_vm._v("\n            mdi-pencil\n            ")]
                     )
-                  ])
-                ]
-              )
-            }),
-            0
-          )
-        ])
-      ])
+                  ]
+                }
+              }
+            ])
+          })
+        ],
+        1
+      )
     ],
     1
   )
@@ -76147,7 +76118,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuetify__WEBPACK_IMPORTED_MODULE_1___default.a);
-var opts = {};
+var opts = {
+  iconfont: 'md'
+};
 /* harmony default export */ __webpack_exports__["default"] = (new vuetify__WEBPACK_IMPORTED_MODULE_1___default.a(opts));
 
 /***/ }),

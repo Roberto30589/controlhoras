@@ -1,41 +1,27 @@
 <template>
-        <form action=""  v-on:submit.prevent="todatabase()">
-            <v-card>
-                <v-card-title>
-                    <h5>Cliente</h5>
-                </v-card-title>
-                <v-card-text>
-                    <v-container>
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label>Nombre</label>
-                                <input type="text" class="form-control" placeholder="Entel" required v-model="cliente.nombre"> 
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label>RUT</label>
-                                <input type="text" class="form-control" placeholder="76.000.000-6" v-model="cliente.rut">
-                            </div>
-                        </div>
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="clientehabilitado" v-model="cliente.habilitado">
-                            <label class="custom-control-label" for="clientehabilitado">Habilitado</label>
-                        </div>
-                    </v-container>
-                    <v-card-actions>
-                        <v-btn color="red" dark>Cancelar</v-btn>
-                        <v-btn type="submit" class="btn btn-primary">Save changes</v-btn>
-                    </v-card-actions>
-                </v-card-text>
-            </v-card>
-        </form>
+    <form action=""  v-on:submit.prevent="todatabase()">
+        <v-card>
+            <v-card-title class="headline">Cliente</v-card-title>
+            <v-card-text>
+                <v-container>
+                    <v-text-field label="Nombre Empresa" required v-model="cliente.nombre"></v-text-field>
+                    <v-text-field label="RUT Empresa" v-model="cliente.rut"></v-text-field>
+                    <v-switch  inset v-model="cliente.habilitado" :label="cliente.habilitado?'Habilitado':'Deshabilitado'"></v-switch>
+                </v-container>
+                <v-card-actions>
+                    <v-btn color="red" dark @click="$emit('close')">Cancelar</v-btn>
+                    <v-btn type="submit" color="blue darken-4" dark class="btn btn-primary">Save changes</v-btn>
+                </v-card-actions>
+            </v-card-text>
+        </v-card>
+    </form>
 </template>
 
 <script>
     export default {
-        props:['data'],
-        data(){
-            return {
-                cliente:{
+        props:{
+            dataIn:{
+                default:{
                     id:null,
                     nombre:'',
                     rut:'',
@@ -43,8 +29,16 @@
                 }
             }
         },
+        data(){
+            return {
+                cliente:null
+            }
+        },
+        created(){
+            this.cliente=JSON.parse(JSON.stringify(this.dataIn));
+        },
         mounted() {
-
+            console.log('Componente Cliente Form Montado');
         },
         methods:{
             todatabase(){
@@ -64,7 +58,7 @@
             }
         },
         watch: {
-            data: function (val) {
+            dataIn: function (val) {
                 if(val==null){
                     this.cliente={
                         id:null,
@@ -75,7 +69,7 @@
                 }else{
                     this.cliente=JSON.parse(JSON.stringify(val));
                 }
-            },
+            }
         }
     }
 </script>
