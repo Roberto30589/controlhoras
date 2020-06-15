@@ -1,47 +1,46 @@
 <template>
-    <div>
+    <v-app>
+        <v-btn rounded color="primary" dark  v-on:click="clienteForm(null)">Agregar</v-btn>
+        
+        <v-dialog max-width="600px" v-model="clienteModal">
         <cliente-form 
-            id="addModal"
             @insert="clienteInsert"
             @update="clienteUpdate"
-            :cliente="cliente"
+            :data="cliente"
         >
         </cliente-form>
-        <div class="card">
-            <div class="card-header">Clientes 
-                <button v-on:click="clienteForm(null)">+</button>
+        </v-dialog>
+        <v-card>
+            <div class="card-header">
+                Clientes 
             </div>
-            <div class="card-body">
-                <div class="form-row" v-for="(cliente,index) in clientes" :key="index">
-                    <div class="form-group col-md-5">
-                        <label>Nombre</label>
-                        <p class="form-control">{{cliente.nombre}}</p> 
-                    </div>
-                    <div class="form-group col-md-5">
-                        <label>RUT</label>
-                        <p class="form-control">{{cliente.rut}}</p> 
-                    </div>
-                    <div class="form-group col-md-5">
-                        <button v-on:click="clienteForm(cliente)">ver</button>
-                    </div>
-                </div>
+                <div class="card-body">
+                <table class="table table-striped table-bordered">
+                    <tr v-for="(cliente) in clientes" :key="cliente.id" v-show="cliente.habilitado">
+                        <td>
+                            {{cliente.nombre}}
+                        </td>
+                        <td>
+                            {{cliente.rut}}
+                        </td>
+                        <td width="1">
+                            <button class="form-control btn btn-outline-primary" v-on:click="clienteForm(cliente)">editar</button>
+                        </td>
+                    </tr>
+                </table>
             </div>
-        </div>
-    </div>
+        </v-card>
+    </v-app>
 </template>
-
 <script>
     export default {
         data(){
             return {
                 clientes:[],
-                cliente:{
-                    id:null,
-                    nombre:'',
-                    rut:''
-                }
+                cliente:null,
+                clienteModal:false,
             }
-        },        
+        },
         created(){
             axios.get('list')
                 .then(res =>{
@@ -50,27 +49,20 @@
         },
         mounted() {
             console.log('Componente List Montado');
-
         },
         methods:{
             clienteForm(cliente){
-                if(cliente==null){
-                    this.cliente={
-                        id:null,
-                        nombre:'',
-                        rut:''
-                    }
-                }else{
-                    this.cliente=cliente;
-                }
-                $('#addModal').modal('show');
+                this.cliente=cliente;
+                this.clienteModal=true;
             },
             clienteInsert(cliente){
                 this.clientes.push(cliente);
+                console.log(this.clientes);
                 $('#addModal').modal('hide');
             },
             clienteUpdate(cliente){
-                this.cliente=cliente;
+                Object.assign(this.cliente, cliente);
+                console.log(this.clientes);
                 $('#addModal').modal('hide');
             },
         }

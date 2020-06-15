@@ -1,15 +1,11 @@
 <template>
-    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-hidden="true">
-        <form action="" v-on:submit.prevent="todatabase()">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Cliente</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
+        <form action=""  v-on:submit.prevent="todatabase()">
+            <v-card>
+                <v-card-title>
+                    <h5>Cliente</h5>
+                </v-card-title>
+                <v-card-text>
+                    <v-container>
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label>Nombre</label>
@@ -20,23 +16,31 @@
                                 <input type="text" class="form-control" placeholder="76.000.000-6" v-model="cliente.rut">
                             </div>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
-                    </div>
-                </div>
-            </div>
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="clientehabilitado" v-model="cliente.habilitado">
+                            <label class="custom-control-label" for="clientehabilitado">Habilitado</label>
+                        </div>
+                    </v-container>
+                    <v-card-actions>
+                        <v-btn color="red" dark>Cancelar</v-btn>
+                        <v-btn type="submit" class="btn btn-primary">Save changes</v-btn>
+                    </v-card-actions>
+                </v-card-text>
+            </v-card>
         </form>
-    </div>
 </template>
 
 <script>
     export default {
-        props:['cliente'],
+        props:['data'],
         data(){
             return {
-
+                cliente:{
+                    id:null,
+                    nombre:'',
+                    rut:'',
+                    habilitado:true
+                }
             }
         },
         mounted() {
@@ -56,7 +60,22 @@
                         this.$emit('insert',res.data)
                     }
                 })
+
             }
+        },
+        watch: {
+            data: function (val) {
+                if(val==null){
+                    this.cliente={
+                        id:null,
+                        nombre:'',
+                        rut:'',
+                        habilitado:true
+                    }
+                }else{
+                    this.cliente=JSON.parse(JSON.stringify(val));
+                }
+            },
         }
     }
 </script>
