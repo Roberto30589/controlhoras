@@ -18,6 +18,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
     <style>
         html,body{
             height: 100%;
@@ -55,6 +56,9 @@
                                 </li>
                             @endif
                         @else
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('proyectos.page') }}">Proyectos</a>
+                            </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('clientes.page') }}">Clientes</a>
                             </li>

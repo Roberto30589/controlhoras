@@ -17,6 +17,7 @@ class CreateClientesTable extends Migration
             $table->id();
             $table->string('nombre');
             $table->string('rut');
+            $table->boolean('habilitado')->default(true);
             $table->timestamps();
         });
     }

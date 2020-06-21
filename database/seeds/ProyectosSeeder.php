@@ -12,8 +12,6 @@ class ProyectosSeeder extends Seeder
      */
     public function run()
     {
-        Proyectos::create([
-            'nombre'  => 'Pruebas nº1',
-        ]);
+        
     }
 }

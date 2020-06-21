@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProyectosTable extends Migration
+class AddFkToProyectosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,9 @@ class CreateProyectosTable extends Migration
      */
     public function up()
     {
-        Schema::create('proyectos', function (Blueprint $table) {
-            $table->id();
-            $table->string('nombre');
-            $table->longText('descripcion');
-            $table->boolean('habilitado')->default(true);
-            $table->timestamps();
+        Schema::table('proyectos', function (Blueprint $table) {
+            $table->bigInteger('cliente_id')->unsigned();
+            $table->foreign('cliente_id')->references('id')->on('clientes');
         });
     }
 
@@ -29,6 +26,8 @@ class CreateProyectosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('proyectos');
+        Schema::table('proyectos', function (Blueprint $table) {
+            $table->dropColumn('cliente_id');
+        });
     }
 }
