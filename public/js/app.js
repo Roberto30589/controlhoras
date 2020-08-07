@@ -1968,7 +1968,7 @@ var Cliente = function Cliente() {
     };
   },
   mounted: function mounted() {
-    console.log('Componente ClienteForm Montado');
+    console.log('Componente ClienteForm Montado 3');
   },
   methods: {
     todatabase: function todatabase() {
@@ -1983,11 +1983,14 @@ var Cliente = function Cliente() {
       axios.post(url, this.cliente).then(function (res) {
         if (_this.cliente.id != null) {
           _this.$emit('update', res.data);
+
+          console.log('UPDATE');
         } else {
           _this.$emit('insert', res.data);
-        }
 
-        _this.cliente = new Cliente();
+          _this.cliente = new Cliente();
+          console.log('INSERT');
+        }
       });
     }
   },
