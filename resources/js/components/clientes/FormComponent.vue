@@ -67,11 +67,13 @@
                 axios.post(url,this.cliente)
                 .then(res => {
                     if(this.cliente.id != null){
-                        this.$emit('update',res.data)
+                        this.$emit('update',res.data);
+                        console.log('UPDATE');
                     }else{
-                        this.$emit('insert',res.data)
+                        this.$emit('insert',res.data);
+                        this.cliente = new Cliente();
+                        console.log('INSERT');
                     }
-                    this.cliente = new Cliente();
                 })
             }
         },
