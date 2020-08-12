@@ -47,7 +47,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(item) in clientes" :key="item.id" v-show="item.habilitado==habilitados">
+                <tr v-for="(item) in clientes" :key="item.id" v-show="item.habilitado==habilitados" v-bind:class="[item.habilitado ? 'tr-activos' : 'tr-inactivos']">
                     <th scope="row"  width="1">
                         {{item.id}}
                     </th>

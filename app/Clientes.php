@@ -9,4 +9,9 @@ class Clientes extends Model
     protected $fillable = [
         'id', 'nombre', 'rut','habilitado'
     ];
+
+    
+    public function proyectos() {
+        return $this->hasMany('App\Proyectos');
+    }
 }
